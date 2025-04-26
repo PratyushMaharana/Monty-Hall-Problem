@@ -1,13 +1,36 @@
 # Monty Hall Problem
-The Monty Hall Problem is a classic probability puzzle based on a game show scenario. A contestant picks one of three doors, behind one is a prize (like a car) and behind the others are goats. After the choice, the host (who knows what’s behind each door) opens a different door to reveal a goat. The contestant then decides to either stay with the original door or switch to the remaining unopened door. Counterintuitively, switching doors doubles the chance of winning (about 2/3) compared to staying with the initial choice (about 1/3). This repository contains a Python Jupyter Notebook that simulates the Monty Hall game to verify these success rates.
-# How to Run
-Open the notebook: Launch Jupyter Notebook or JupyterLab and open monty_hall_problem.ipynb.
-Run the cells: Execute the cells in order. The notebook will run simulations of the game and print the success rates for switching vs. staying.
-# Code Highlights
-Simulation loop (pure Python): The core simulation runs many trials by randomly placing the prize, making a first choice, having the host remove a goat, and recording wins for switching vs. staying. For example:
+The Monty Hall Problem is a classic probability puzzle based on a game show scenario.
+A contestant picks one of three doors — behind one is a prize, and behind the others are goats.
+After the choice, the host, who knows the contents, reveals a goat behind a different door.
+The contestant is then given a choice to stay with their original door or switch to the other unopened door.
 
-for _ in range(repeats):
-    doors = [0,0,0]
+Statistically, switching doors gives a higher chance of winning (about 66.7%), while staying gives about 33.3%!
+
+# File Description
+monty_hall_problem.ipynb : A Jupyter notebook simulating the Monty Hall game with both pure Python and NumPy approaches.
+
+# (Optional) Create a virtual environment
+python3 -m venv monty_env
+source monty_env/bin/activate
+
+# Install Jupyter if you don't have it
+pip install notebook
+Run
+bash
+Copy
+Edit
+# Open the notebook
+jupyter notebook ''' monty_hall_problem.ipynb ''' 
+Then run all the cells to simulate and see the results.
+
+Code Highlight
+Here’s a glimpse of the pure Python simulation logic:
+
+python
+Copy
+Edit
+'''for _ in range(repeats):
+    doors = [0, 0, 0]
     doors[random.randint(0,2)] = 1
     first_choice = doors.pop(random.randint(0,2))
     if doors[0] == 0:
@@ -15,35 +38,21 @@ for _ in range(repeats):
     else:
         doors.pop(1)
     keep_results.append(first_choice)
-    switch_results.append(doors[0])
-    
-(From the notebook​
-github.com
-​
-github.com
-.)
-# NumPy vectorized approach: 
-The notebook also demonstrates a compact simulation using NumPy arrays. It assigns the prize and choices across a large array and computes means. For example:
-
-import numpy as np
+    switch_results.append(doors[0]) ''' 
+And here’s a faster NumPy version:
+'''import numpy as np
 repeats = 1_000_000
-doors = np.zeros((repeats,3))
+doors = np.zeros((repeats, 3))
 doors[:,0] = 1
 rng = np.random.default_rng()
 rng.permuted(doors, axis=1, out=doors)
 doors[:, 1:].sort()
 means = doors.mean(axis=0)
 print(f"switching win rate: {means[2]:.3%}")
-print(f"staying win rate:  {means[0]:.3%}")
-(From the notebook​
-github.com
-​
-.)
+print(f"staying win rate:  {means[0]:.3%}")'''
 # Results
-Running the simulations confirms the expected probabilities. In the notebook’s output, the success rate for switching doors is about 66.7%, while staying yields about 33.3%​
-github.com
-. This matches the theoretical result that switching doubles the chance of winning. For example, one run showed “the success rate when switching is 66.663%” and “when keeping is 33.337%”​
-github.com
-.
-License
-This project is released under the MIT License. Feel free to use and modify the code as needed.
+
+Strategy	Winning Probability
+Stay	~33.3%
+Switch	~66.7%
+Switching is clearly the better strategy!
